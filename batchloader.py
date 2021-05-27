@@ -10,11 +10,12 @@ base_clip_path = 'https://clips-media-assets2.twitch.tv/'
 def retrieve_mp4_data(slug):
     cid = sys.argv[1]
     clip_info = requests.get(
-        "https://api.twitch.tv/helix/clips?id=" + slug,
-        headers={"Client-ID": cid}).json()
-    thumb_url = clip_info['data'][0]['thumbnail_url']
-    title = clip_info['data'][0]['title']
-    slice_point = thumb_url.index("-preview-")
+        "https://api.twitch.tv/kraken/clips/" + slug,
+        headers={"Accept": "application/vnd.twitchtv.v5+json","Client-ID": cid}).json()
+    print(clip_info['vod']['preview_image_url'])
+    thumb_url = clip_info['vod']['preview_image_url']
+    title = clip_info['title']
+    slice_point = thumb_url.index("-preview")
     mp4_url = thumb_url[:slice_point] + '.mp4'
     return mp4_url, title
 
